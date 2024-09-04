@@ -1,0 +1,99 @@
+{
+	"version": 1,
+	"group": "plugin",
+	"properties": [
+		{
+			"name": "BUILD_COORDS",
+			"type": "build_system_coordinates",
+			"order": 10
+		},
+		{
+			"name": "LANGUAGE",
+			"type": "string",
+			"options": ["Java", "Kotlin"]
+		},
+		{
+			"name": "DSL",
+			"type": "string",
+			"options": ["Groovy", "Kotlin"]
+		},
+		{
+			"name": "MINESTOM_VERSION",
+			"type": "maven_artifact_version",
+			"parameters": {
+				"sourceUrl": "https://repo1.maven.org/maven2/net/minestom/minestom-snapshots/maven-metadata.xml"
+			}
+		},
+		{
+			"name": "KOTLIN_VERSION",
+			"type": "maven_artifact_version",
+			"parameters": {
+				"sourceUrl": "https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk8/maven-metadata.xml"
+			},
+			"visible": {
+				"dependsOn": ["LANGUAGE"],
+				"condition": "$LANGUAGE == 'Kotlin'"
+			}
+		},
+		{
+			"name": "MAIN_CLASS",
+			"type": "class_fqn",
+			"derives": {
+				"parents": ["BUILD_COORDS", "PROJECT_NAME"],
+				"method": "suggestClassName"
+			}
+		}
+	],
+	"files": [
+		{
+			"template": "gitignore.ft",
+			"destination": ".gitignore",
+			"condition": "$USE_GIT"
+		},
+		{
+			"template": "build.gradle.ft",
+			"destination": "build.gradle",
+			"condition": "$DSL == 'Groovy'"
+		},
+		{
+			"template": "settings.gradle.ft",
+			"destination": "settings.gradle",
+			"condition": "$DSL == 'Groovy'"
+		},
+		{
+			"template": "build.gradle.kts.ft",
+			"destination": "build.gradle.kts",
+			"condition": "$DSL == 'Kotlin'"
+		},
+		{
+			"template": "settings.gradle.kts.ft",
+			"destination": "settings.gradle.kts",
+			"condition": "$DSL == 'Kotlin'"
+		},
+		{
+			"template": "Main.java.ft",
+			"destination": "src/main/java/${MAIN_CLASS.path}.java",
+			"condition": "$LANGUAGE == 'Java'",
+			"openInEditor": true
+		},
+		{
+			"template": "Main.kt.ft",
+			"destination": "src/main/kotlin/${MAIN_CLASS.path}.kt",
+			"condition": "$LANGUAGE == 'Kotlin'",
+			"openInEditor": true
+		}
+	],
+	"finalizers": [
+		{
+			"type": "import_gradle_project"
+		},
+		{
+			"type": "run_gradle_tasks",
+			"tasks": ["wrapper"]
+		},
+		{
+			"type": "git_add_all",
+			"condition": "$USE_GIT"
+		}
+	]
+}
