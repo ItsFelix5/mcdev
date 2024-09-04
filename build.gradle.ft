@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'com.gradleup.shadow' version "8.3.0"
     #if($LANGUAGE == "Kotlin")
-        kotlin 'jvm' version "${KOTLIN_VERSION}"
+        id 'org.jetbrains.kotlin.jvm' version "${KOTLIN_VERSION}"
     #end
 }
 
@@ -17,12 +17,6 @@ dependencies {
     implementation 'net.minestom:minestom-snapshots:${MINESTOM_VERSION}'
     implementation 'ch.qos.logback:logback-classic:1.5.7'
 }
-
-#if($LANGUAGE == "Kotlin")
-    kotlin {
-        jvmToolchain(21)
-    }
-#end
 
 java {
     toolchain {
