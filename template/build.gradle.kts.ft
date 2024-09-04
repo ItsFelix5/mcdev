@@ -1,6 +1,9 @@
 plugins {
     id("java")
     id("com.gradleup.shadow") version "8.3.0"
+    #if($LANGUAGE == "Kotlin")
+        id("org.jetbrains.kotlin.jvm") version "${KOTLIN_LOADER_VERSION.toString().split("kotlin.")[1]}"
+    #end
 }
 
 group = "${BUILD_COORDS.groupId}"
@@ -13,6 +16,12 @@ repositories {
 dependencies {
     implementation("net.minestom:minestom-snapshots:${MINESTOM_VERSION}")
 }
+
+#if($LANGUAGE == "Kotlin")
+    kotlin {
+        jvmToolchain(21)
+    }
+#end
 
 java {
     toolchain {
