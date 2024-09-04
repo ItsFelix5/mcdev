@@ -19,10 +19,7 @@
 		},
 		{
 			"name": "MINESTOM_VERSION",
-			"type": "maven_artifact_version",
-			"parameters": {
-				"sourceUrl": "https://repo1.maven.org/maven2/net/minestom/minestom-snapshots/maven-metadata.xml"
-			}
+			"type": "string"
 		},
 		{
 			"name": "KOTLIN_VERSION",
